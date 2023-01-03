@@ -5,7 +5,8 @@ from django.db.models import Sum
 class Customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    contact_number = models.CharField(max_length=11)
+    contact_number = models.CharField(max_length=20)
+    date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'
@@ -85,3 +86,45 @@ class LineItem(models.Model):
         if self.price_override:
             return self.price_override
         return self.quantity * self.product.unit_price
+
+
+class Order(models.Model):
+    CASH = 0
+    GCASH = 1
+    PAYMENT_METHOD_CHOICES = (
+        (CASH, 'Cash'),
+        (GCASH, 'GCash')
+    )
+
+    date_created = models.DateTimeField(auto_now_add=True)
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name='orders')
+    weight = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True)
+    num_of_serviced_wash_loads = models.IntegerField()
+    num_of_serviced_dry_loads = models.IntegerField()
+    service_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    detergent_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    fabcon_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    bleach_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    plastic_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    payment_method = models.PositiveSmallIntegerField(choices=PAYMENT_METHOD_CHOICES, default=CASH)
+    payment_made = models.DecimalField(max_digits=8, decimal_places=2)
+    date_required = models.DateTimeField(null=True, blank=True)
+    date_claimed = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.customer}: {self.date_created}'
+
+    @property
+    def total_cost(self):
+        return (
+            self.service_cost
+            + self.detergent_cost
+            + self.fabcon_cost
+            + self.plastic_cost
+        )
+
+    @property
+    def is_paid(self):
+        return self.payment_made == self.total_cost
