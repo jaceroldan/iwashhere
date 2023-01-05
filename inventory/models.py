@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.db.models import Sum
 
@@ -101,15 +103,14 @@ class Order(models.Model):
         Customer, on_delete=models.CASCADE, related_name='orders')
     weight = models.DecimalField(
         max_digits=5, decimal_places=2, null=True, blank=True)
-    num_of_serviced_wash_loads = models.IntegerField()
-    num_of_serviced_dry_loads = models.IntegerField()
-    service_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    wash_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    dry_cost = models.DecimalField(max_digits=8, decimal_places=2)
     detergent_cost = models.DecimalField(max_digits=8, decimal_places=2)
     fabcon_cost = models.DecimalField(max_digits=8, decimal_places=2)
     bleach_cost = models.DecimalField(max_digits=8, decimal_places=2)
     plastic_cost = models.DecimalField(max_digits=8, decimal_places=2)
     payment_method = models.PositiveSmallIntegerField(choices=PAYMENT_METHOD_CHOICES, default=CASH)
-    payment_made = models.DecimalField(max_digits=8, decimal_places=2)
+    payment_made = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal(0.0))
     date_required = models.DateTimeField(null=True, blank=True)
     date_claimed = models.DateTimeField(null=True, blank=True)
 
@@ -117,14 +118,29 @@ class Order(models.Model):
         return f'{self.customer}: {self.date_created}'
 
     @property
-    def total_cost(self):
+    def service(self):
+        return '1 Dry'
+    
+    @property
+    def service_cost(self) -> Decimal:
+        return self.wash_cost + self.dry_cost
+
+    @property
+    def total_cost(self) -> Decimal:
         return (
             self.service_cost
             + self.detergent_cost
             + self.fabcon_cost
+            + self.bleach_cost
             + self.plastic_cost
         )
 
     @property
-    def is_paid(self):
-        return self.payment_made == self.total_cost
+    def payment_method_display(self) -> str:
+        return self.get_payment_method_display()
+
+    @property
+    def payment_status(self) -> str:
+        return (
+            'Paid' if self.payment_made >= self.total_cost else 'Unpaid'
+            + f' {self.payment_method_display}')
