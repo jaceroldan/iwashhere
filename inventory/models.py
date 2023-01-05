@@ -91,9 +91,11 @@ class LineItem(models.Model):
 
 
 class Order(models.Model):
-    CASH = 0
-    GCASH = 1
+    UNPAID = 0
+    CASH = 1
+    GCASH = 2
     PAYMENT_METHOD_CHOICES = (
+        (UNPAID, 'Unpaid'),
         (CASH, 'Cash'),
         (GCASH, 'GCash')
     )
