@@ -61,3 +61,11 @@ def list_orders(request):
         'orders': orders
     }
     return render(request, 'inventory/orders_list.html', context)
+
+
+def list_customers(request):
+    customers = Customer.objects.all()
+    context = {
+        'customers': customers
+    }
+    return render(request, 'inventory/customers_list.html', context)
