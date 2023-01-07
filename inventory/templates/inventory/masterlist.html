@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>View orders</title>
+    
+    <style>
+        .receipt {
+            width: 50%;
+            margin: 32px auto;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+        }
+
+        .field {
+            width: 100%;
+            display: flex;
+            align-items: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="container container-fluid">
+
+        <h1>Masterlist</h1>
+        <a href="{% url 'inventory:new' %}" target="_blank">Create</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Control No.</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Weight</th>
+                    <th>Service Cost</th>
+                    <th>Detergent</th>
+                    <th>Fabcon</th>
+                    <th>Bleach</th>
+                    <th>Plastic</th>
+                    <th>Total Amount</th>
+                    <th>Remarks</th>
+                    <th>Date Required</th>
+                    <th>Time Required</th>
+                    <th>Date Claimed</th>
+                    <th>Time Claimed</th>
+                    <th>Payment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.pk }}</td>
+                    <td>{{ order.date_created }}</td>
+                    <td>{{ order.customer }}</td>
+                    <td>{{ order.weight }}</td>
+                    <td>{{ order.service_cost }}</td>
+                    <td>{{ order.detergent_cost }}</td>
+                    <td>{{ order.fabcon_cost }}</td>
+                    <td>{{ order.bleach_cost }}</td>
+                    <td>{{ order.plastic_cost }}</td>
+                    <td>{{ order.total_cost }}</td>
+                    <td>{{ order.remarks }}</td>
+                    <td>{{ order.date_required|date:"N d, Y" }}</td>
+                    <td>{{ order.date_required|time:"h:i" }}</td>
+                    <td>{{ order.date_required|date:"N d, Y" }}</td>
+                    <td>{{ order.date_required|time:"h:i" }}</td>
+                    <td>{{ order.payment_made }}</td>
+                    <td><a href="{% url 'inventory:view' order.pk %} ">Open</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const today = new Date();
+        const dateCreated = document.getElementById('date_created')
+        
+        let month = today.getMonth() + 1;
+        if (month < 10)
+            month = '0' + month;
+        let day = today.getDay();
+        if (day < 10)
+            day = '0' + day;
+        dateCreated.value = `${today.getFullYear()}-${month}-${day}`;
+    </script>
+</body>
+</html>

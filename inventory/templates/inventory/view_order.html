@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Receipt</title>
+    
+    <style>
+        .receipt {
+            width: 50%;
+            margin: 32px auto;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+        }
+
+        .field {
+            width: 100%;
+            display: flex;
+            align-items: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="logo">
+            <h1>I Wash Here</h1>
+        </div>
+        <div class="main-fields">
+            <div class="row">
+                <div class="col">
+                    <div class="field">
+                        <label for="customer"><b>Customer:</b></label>
+                        {{ order.customer.first_name }}
+                    </div>
+                    <div class="field">
+                        <label for="contact_number"><b>Tel. No.: </b></label>
+                        {{ order.customer.contact_number }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="field">
+                        <label for="date_created"><b>Date: </b></label>
+                        {{ order.date_created }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="field">
+                        <label for="weight"><b>Weight: </b></label>
+                        {{ order.weight }}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Wash</th>
+                        <td>{{ order.wash_cost }}</td>
+                    </tr>
+                    <tr>
+                        <th>Dry</th>
+                        <td>{{ order.dry_cost }}</td>
+                    </tr>
+                    <tr>
+                        <th>Detergent</th>
+                        <td>{{ order.detergent_cost }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fab Con</th>
+                        <td>{{ order.fabcon_cost }}</td>
+                    </tr>
+                    <tr>
+                        <th>Bleach</th>
+                        <td>{{ order.bleach_cost }}</td>
+                    </tr>
+                    <tr>
+                        <th>Plastic</th>
+                        <td>{{ order.plastic_cost }}</td>
+                    </tr>
+                    <!-- <tr>
+                        <th>Others</th>
+                        <td><input type="number"></td>
+                        <td><input type="number"></td>
+                    </tr> -->
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col">
+                    <label for="total">Total:</label>
+                    <p><b>PHP {{ order.total_cost }}</b></p>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col">
+                    <label for="remarks">Remarks: </label>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col">
+                    <label for="date_required">Date/Time Required</label>
+                    <p>{{ order.date_required }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <input type="submit" class="btn btn-success" value="Create">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
