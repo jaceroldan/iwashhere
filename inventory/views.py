@@ -1,3 +1,7 @@
+import json
+
+from django.core.serializers import serialize
+from django.http import HttpResponse
 from datetime import datetime
 
 from django.shortcuts import render, redirect
@@ -61,6 +65,17 @@ def list_orders(request):
         'orders': orders
     }
     return render(request, 'inventory/orders_list.html', context)
+
+
+def retrieve_order(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    context = {
+        'obj': {
+            'order': serialize('json', [order]),
+            'customer': serialize('json', [order.customer]),
+        }
+    }
+    return HttpResponse(json.dumps(context))
 
 
 def list_customers(request):
