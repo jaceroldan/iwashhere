@@ -23,10 +23,6 @@
             justify-content: center;
         }
 
-        .table {
-            width: 60%;
-        }
-
         .submit-row {
             margin-top: 24px;
         }
@@ -47,17 +43,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'inventory:list-customers' %}">Customers</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'inventory:new' %}">New</a>
-                    </li>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
-                </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                <form class="d-flex">
+                    <button class="btn btn-outline-success"><a class="nav-link" href="{% url 'inventory:new' %}">New</a></button>
                 </form>
           </div>
         </div>
@@ -74,6 +62,41 @@
         if (day < 10)
             day = '0' + day;
         dateCreated.value = `${today.getFullYear()}-${month}-${day}`;
+
+        function updateTotal() {
+            let idElem = document.getElementById('total');
+            let washCostElem = document.getElementsByName('wash_cost')[0];
+            let dryCostElem = document.getElementsByName('dry_cost')[0];
+            let detergentCostElem = document.getElementsByName('detergent_cost')[0];
+            let fabconCostElem = document.getElementsByName('fabcon_cost')[0];
+            let bleachCostElem = document.getElementsByName('bleach_cost')[0];
+            let plasticCostElem = document.getElementsByName('plastic_cost')[0];
+
+            idElem.innerText = (
+                (Number.parseFloat(washCostElem.value) || 0)
+                + (Number.parseFloat(dryCostElem.value) || 0)
+                + (Number.parseFloat(detergentCostElem.value) || 0)
+                + (Number.parseFloat(fabconCostElem.value) || 0)
+                + (Number.parseFloat(bleachCostElem.value) || 0)
+                + (Number.parseFloat(plasticCostElem.value || 0)));
+        }
+
+        updateTotal();
+
+        const idElem = document.getElementById('total')[0];
+        const washCostElem = document.getElementsByName('wash_cost')[0];
+        const dryCostElem = document.getElementsByName('dry_cost')[0];
+        const detergentCostElem = document.getElementsByName('detergent_cost')[0];
+        const fabconCostElem = document.getElementsByName('fabcon_cost')[0];
+        const bleachCostElem = document.getElementsByName('bleach_cost')[0];
+        const plasticCostElem = document.getElementsByName('plastic_cost')[0];
+
+        washCostElem.addEventListener('change', updateTotal);
+        dryCostElem.addEventListener('change', updateTotal);
+        detergentCostElem.addEventListener('change', updateTotal);
+        fabconCostElem.addEventListener('change', updateTotal);
+        bleachCostElem.addEventListener('change', updateTotal);
+        plasticCostElem.addEventListener('change', updateTotal);
     </script>
 </body>
 </html>

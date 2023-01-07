@@ -6,7 +6,7 @@ from inventory.models import Customer, Order
 
 # Create your views here.
 def show_create_receipt(request):
-    return render(request, 'inventory/receipt.html')
+    return render(request, 'inventory/create_order_slip.html')
 
 def show_order(request, order_id):
     order = Order.objects.get(pk=order_id)
