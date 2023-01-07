@@ -55,9 +55,9 @@ def create_receipt(request):
     return redirect('inventory:list')
 
 
-def list_customers(request):
+def list_orders(request):
     orders = Order.objects.all()
     context = {
         'orders': orders
     }
-    return render(request, 'inventory/masterlist.html', context)
+    return render(request, 'inventory/orders_list.html', context)
