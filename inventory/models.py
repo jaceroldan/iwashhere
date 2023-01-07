@@ -106,7 +106,8 @@ class Order(models.Model):
     weight = models.DecimalField(
         max_digits=5, decimal_places=2, null=True, blank=True)
     remarks = models.TextField()
-    service_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    wash_cost = models.DecimalField(max_digits=8, decimal_places=2)
+    dry_cost = models.DecimalField(max_digits=8, decimal_places=2)
     detergent_cost = models.DecimalField(max_digits=8, decimal_places=2)
     fabcon_cost = models.DecimalField(max_digits=8, decimal_places=2)
     bleach_cost = models.DecimalField(max_digits=8, decimal_places=2)
@@ -118,6 +119,10 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.customer}: {self.date_created}'
+
+    @property
+    def service_cost(self):
+        return self.wash_cost + self.dry_cost
 
     @property
     def total_cost(self) -> Decimal:

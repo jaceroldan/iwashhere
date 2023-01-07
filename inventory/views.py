@@ -28,7 +28,7 @@ def create_receipt(request):
     wash_cost = request.POST['wash_cost']
     dry_cost = request.POST['dry_cost']
     # TODO: Ask about the fold cost
-    fold_cost = request.POST['fold_cost']
+    # fold_cost = request.POST['fold_cost']
     detergent_cost = request.POST['detergent_cost']
     fabcon_cost = request.POST['fabcon_cost']
     bleach_cost = request.POST['bleach_cost']
