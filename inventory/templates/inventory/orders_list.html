@@ -41,10 +41,10 @@
                     <td>{{ order.remarks }}</td>
                     <td>{{ order.date_required|date:"N d, Y" }}</td>
                     <td>{{ order.date_required|time:"h:i" }}</td>
-                    <td>{{ order.date_required|date:"N d, Y" }}</td>
-                    <td>{{ order.date_required|time:"h:i" }}</td>
+                    <td>{{ order.date_claimed|date:"N d, Y" }}</td>
+                    <td>{{ order.date_claimed|time:"h:i" }}</td>
                     <td>{{ order.payment_made }}</td>
-                    <td><a href="{% url 'inventory:view' order.pk %} ">Open</a></td>
+                    <td><button class="btn btn-secondary"><a href="{% url 'inventory:view' order.pk %} ">Open</a></button></td>
                 </tr>
                 {% endfor %}
             </tbody>
