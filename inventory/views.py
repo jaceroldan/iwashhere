@@ -67,6 +67,13 @@ def list_orders(request):
     return render(request, 'inventory/orders_list.html', context)
 
 
+def list_unclaimed_orders(request):
+    unclaimed_orders = Order.objects.filter(date_claimed__isnull=True)
+    context = {
+        'orders': unclaimed_orders
+    }
+    return render(request, 'inventory/orders_list.html', context)
+
 def retrieve_order(request, order_id):
     order = Order.objects.get(pk=order_id)
     context = {
@@ -76,6 +83,8 @@ def retrieve_order(request, order_id):
         }
     }
     return HttpResponse(json.dumps(context))
+
+
 
 
 def list_customers(request):

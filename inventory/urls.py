@@ -9,5 +9,6 @@ urlpatterns = [
     path('order/view/<int:order_id>', views.show_order, name='view'),
     path('order/json/<int:order_id>', views.retrieve_order, name='order_json'),
     path('orders/', views.list_orders, name='list-orders'),
+    path('orders-unclaimed/', views.list_unclaimed_orders, name='list-orders-unclaimed'),
     path('customers/', views.list_customers, name='list-customers'),
 ]

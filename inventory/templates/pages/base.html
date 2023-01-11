@@ -44,6 +44,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'inventory:list-customers' %}">Customers</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inventory:list-orders-unclaimed' %}">To Claim</a>
+                    </li>
                 </ul>
                 <form class="d-flex">
                     <button class="btn btn-outline-success"><a class="nav-link" href="{% url 'inventory:new' %}">New</a></button>
