@@ -92,7 +92,10 @@
         </div>
         <div class="row">
             <div class="col">
-                <button class="btn btn-success" id="print">Print</button>
+                <button class="btn btn-warning"><a href="{% url 'inventory:edit' order.pk %}">Edit</a></button>
+                <button class="btn btn-secondary" id="print">Print</button>
+                <button class="btn btn-success" id="print">Mark as Paid</button>
+                <button class="btn btn-success" id="print">Mark as Claimed</button>
             </div>
         </div>
     </div>

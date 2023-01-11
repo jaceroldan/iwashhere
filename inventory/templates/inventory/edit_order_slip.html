@@ -1,0 +1,94 @@
+{% extends "../pages/base.html" %}
+{% block content %}
+    <div class="receipt">
+        <div class="logo">
+            <h1>I Wash Here</h1>
+        </div>
+        <form action="{% url 'inventory:create' %}" method="post">
+        {% csrf_token %}
+            <div class="main-fields">
+                <div class="row">
+                    <div class="col">
+                        <div class="field mb-3">
+                            <label class="form-label" for="customer">Customer</label>
+                            <input class="form-control form-control-sm" type="text" name="customer" id="customer" value="{{ order.customer.first_name }}">
+                        </div>
+                        <div class="field mb-3">
+                            <label class="form-label" for="contact_number">Tel. No.: </label>
+                            <input class="form-control form-control-sm" type="tel" name="contact_number" id="contact_number" value="{{ order.customer.contact_number }}">
+                        </div>
+                        <div class="field mb-3">
+                            <label class="form-label" for="weight">Weight: </label>
+                            <input class="form-control form-control-sm" type="text" name="weight" id="weight" value="{{ order.weight }}">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3 field">
+                            <label class="form-label" for="date_created">Date: </label>
+                            <input class="form-control form-control-sm" type="date" name="date_created" id="date_created" value="{{ order.date_created|date:"Y-m-d" }}" disabled>
+                        </div>
+                        <div class="mb-3 field">
+                            <label class="form-label" for="remarks">Remarks</label>
+                            <textarea class="form-control" id="remarks" rows="3">{{ order.remarks }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+                <hr>
+                <div class="table-container">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Wash</th>
+                                <td><input type="number" name="wash_cost" value="{{ order.wash_cost }}"></td>
+                            </tr>
+                            <tr>
+                                <th>Dry</th>
+                                <td><input type="number" name="dry_cost" value="{{ order.dry_cost }}"></td>
+                            </tr>
+                            <tr>
+                                <th>Detergent</th>
+                                <td><input type="number" name="detergent_cost" value="{{ order.detergent_cost }}"></td>
+                            </tr>
+                            <tr>
+                                <th>Fab Con</th>
+                                <td><input type="number" name="fabcon_cost" value="{{ order.fabcon_cost }}"></td>
+                            </tr>
+                            <tr>
+                                <th>Bleach</th>
+                                <td><input type="number" name="bleach_cost" value="{{ order.bleach_cost }}"></td>
+                            </tr>
+                            <tr>
+                                <th>Plastic</th>
+                                <td><input type="number" name="plastic_cost" value="{{ order.plastic_cost }}"></td>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <td id="total"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="date_required">Date/Time Required</label>
+                        <input class="form-control form-control-sm" type="date" name="date_required" id="date_required" value="{{ order.date_required|date:"Y-m-d" }}">
+                        <input class="form-control form-control-sm" type="time" name="time_required" id="time_required" value="{{ order.date_required|time:"H:i" }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row submit-row">
+                <div class="col">
+                    <input type="submit" class="btn btn-primary" value="Edit">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

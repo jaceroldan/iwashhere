@@ -6,6 +6,7 @@ app_name = 'inventory'
 urlpatterns = [
     path('order/new/', views.show_create_receipt, name='new'),
     path('order/create/', views.create_receipt, name='create'),
+    path('order/edit/<int:order_id>', views.show_edit_receipt, name='edit'),
     path('order/view/<int:order_id>', views.show_order, name='view'),
     path('order/json/<int:order_id>', views.retrieve_order, name='order_json'),
     path('orders/', views.list_orders, name='list-orders'),

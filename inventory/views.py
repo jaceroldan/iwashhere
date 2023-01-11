@@ -12,6 +12,15 @@ from inventory.models import Customer, Order
 def show_create_receipt(request):
     return render(request, 'inventory/create_order_slip.html')
 
+
+def show_edit_receipt(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    context = {
+        'order': order
+    }
+    return render(request, 'inventory/edit_order_slip.html', context)
+
+
 def show_order(request, order_id):
     order = Order.objects.get(pk=order_id)
     context = {'order': order}
@@ -83,8 +92,6 @@ def retrieve_order(request, order_id):
         }
     }
     return HttpResponse(json.dumps(context))
-
-
 
 
 def list_customers(request):

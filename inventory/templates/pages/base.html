@@ -57,16 +57,19 @@
     {% block content %}{% endblock %}
     <script>
         const today = new Date();
-        const dateCreated = document.getElementById('date_created')
-        
-        let month = today.getMonth() + 1;
-        if (month < 10)
-            month = '0' + month;
-        let day = today.getDay();
-        if (day < 10)
-            day = '0' + day;
-        if (dateCreated)
-            dateCreated.value = `${today.getFullYear()}-${month}-${day}`;
+
+        if (document.location.pathname === '/inventory/order/new/') {
+            const dateCreated = document.getElementById('date_created')
+            
+            let month = today.getMonth() + 1;
+            if (month < 10)
+                month = '0' + month;
+            let day = today.getDay();
+            if (day < 10)
+                day = '0' + day;
+            if (dateCreated)
+                dateCreated.value = `${today.getFullYear()}-${month}-${day}`;
+        }
 
         function updateTotal() {
             let idElem = document.getElementById('total');
