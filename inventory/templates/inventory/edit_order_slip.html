@@ -4,7 +4,7 @@
         <div class="logo">
             <h1>I Wash Here</h1>
         </div>
-        <form action="{% url 'inventory:create' %}" method="post">
+        <form action="{% url 'inventory:update' order.pk %}" method="post">
         {% csrf_token %}
             <div class="main-fields">
                 <div class="row">

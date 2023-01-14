@@ -68,6 +68,33 @@ def create_receipt(request):
     return redirect('inventory:list')
 
 
+def update_receipt(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    customer = order.customer
+    
+    first_name = request.POST['customer']
+    contact_number = request.POST['contact_number']
+    customer.first_name = first_name
+    customer.contact_number = contact_number
+    customer.save(update_fields=['first_name', 'contact_number'])
+
+    order.weight = request.POST['weight']
+    order.wash_cost = request.POST['wash_cost']
+    order.dry_cost = request.POST['dry_cost']
+    order.detergent_cost = request.POST['detergent_cost']
+    order.fabcon_cost = request.POST['fabcon_cost']
+    order.bleach_cost = request.POST['bleach_cost']
+    order.plastic_cost = request.POST['plastic_cost']
+    date_required = request.POST['date_required']
+    time_required = request.POST['time_required']
+
+    order.date_required = datetime.strptime(f'{date_required} {time_required}', '%Y-%m-%d %H:%M')
+    order.save()
+
+    return redirect('inventory:list-orders')
+
+
+
 def list_orders(request):
     orders = Order.objects.all()
     context = {
