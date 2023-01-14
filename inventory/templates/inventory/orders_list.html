@@ -1,8 +1,20 @@
 {% extends "../pages/base.html" %}
 {% block content %}
     <div class="container container-fluid">
-        <h1>Orders Masterlist</h1>
-        <a href="{% url 'inventory:new' %}" target="_blank">Create</a>
+        <div class="row" style="display: flex; flex-direction: row;">
+            <div class="col-sm-11">
+                <h1>Orders Masterlist</h1>
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-success" id="create">Create</button>
+            </div>
+            <script>
+                const createBtn = document.getElementById('create');
+                createBtn.addEventListener('click', () => {
+                    window.location.href = "{% url 'inventory:new' %}";
+                });
+            </script>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -44,7 +56,10 @@
                     <td>{{ order.date_claimed|date:"N d, Y" }}</td>
                     <td>{{ order.date_claimed|time:"h:i" }}</td>
                     <td>{{ order.payment_made }}</td>
-                    <td><button class="btn btn-secondary"><a href="{% url 'inventory:view' order.pk %} ">Open</a></button></td>
+                    <td><button class="btn btn-secondary" ><a href="{% url 'inventory:view' order.pk %} ">Open</a></button></td>
+                    <script>
+
+                    </script>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -1,5 +1,7 @@
 import json
 
+from django.utils import timezone
+
 from django.core.serializers import serialize
 from django.http import HttpResponse
 from datetime import datetime
@@ -93,6 +95,21 @@ def update_receipt(request, order_id):
 
     return redirect('inventory:list-orders')
 
+
+def mark_as_claimed_receipt(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    order.date_claimed = timezone.now()
+    order.save(update_fields=['date_claimed'])
+    return redirect('inventory:view', order_id)
+
+
+def mark_as_paid_receipt(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    print(request.POST)
+    order.payment_made = request.POST['payment_amount']
+    order.payment_method = request.POST['payment_option']
+    order.save(update_fields=['payment_made', 'payment_method'])
+    return redirect('inventory:view', order_id)
 
 
 def list_orders(request):
