@@ -74,11 +74,13 @@ def update_receipt(request, order_id):
     order = Order.objects.get(pk=order_id)
     customer = order.customer
     
-    first_name = request.POST['customer']
+    first_name = request.POST['first_name']
+    last_name = request.POST['last_name']
     contact_number = request.POST['contact_number']
     customer.first_name = first_name
+    customer.last_name = last_name
     customer.contact_number = contact_number
-    customer.save(update_fields=['first_name', 'contact_number'])
+    customer.save(update_fields=['first_name', 'last_name', 'contact_number'])
 
     order.weight = request.POST['weight']
     order.wash_cost = request.POST['wash_cost']

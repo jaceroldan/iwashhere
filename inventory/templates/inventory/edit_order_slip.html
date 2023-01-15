@@ -10,8 +10,12 @@
                 <div class="row">
                     <div class="col">
                         <div class="field mb-3">
-                            <label class="form-label" for="customer">Customer</label>
-                            <input class="form-control form-control-sm" type="text" name="customer" id="customer" value="{{ order.customer.first_name }}">
+                            <label class="form-label" for="first_name">First Name</label>
+                            <input class="form-control form-control-sm" type="text" name="first_name" id="first_name" value="{{ order.customer.first_name }}">
+                        </div>
+                        <div class="field mb-3">
+                            <label class="form-label" for="last_name">Last Name</label>
+                            <input class="form-control form-control-sm" type="text" name="last_name" id="last_name" value="{{ order.customer.last_name }}">
                         </div>
                         <div class="field mb-3">
                             <label class="form-label" for="contact_number">Tel. No.: </label>
