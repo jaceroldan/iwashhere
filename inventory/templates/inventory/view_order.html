@@ -1,31 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <title>Receipt</title>
-    
-    <style>
-        .receipt {
-            width: 50%;
-            margin: 32px auto;
-        }
-
-        .logo {
-            display: flex;
-            justify-content: center;
-        }
-
-        .field {
-            width: 100%;
-            display: flex;
-            align-items: space-between;
-        }
-    </style>
-</head>
-<body>
+{% extends "../pages/base.html" %}
+{% block content %}
     <div class="receipt">
         <div class="logo">
             <h1>I Wash Here</h1>
@@ -116,11 +90,56 @@
                 </div>
             </div>
         </div>
+        <div class="row" id="payment-input" style="display: none;">
+            <form action="{% url 'inventory:mark-paid' order.pk %}" method="post">
+            {% csrf_token %}
+                <div class="col">
+                    <label for="payment_amount">
+                        Payment Amount
+                    </label>
+                    <input type="number" class="form-control" name="payment_amount">
+                </div>
+                <div class="col">
+                    <p>Payment options</p>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="payment_option" id="payment_option_cash" value="1">
+                        <label for="payment_option_cash" class="form-check-label">
+                            Cash
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="payment_option" id="payment_option_gcash" value="2">
+                        <label for="payment_option_gcash" class="form-check-label">
+                            GCash
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Set</button>
+                </div>
+            </form>
+        </div>
+        <br><br>
         <div class="row">
             <div class="col">
-                <input type="submit" class="btn btn-success" value="Create">
+                <button class="btn btn-warning"><a href="{% url 'inventory:edit' order.pk %}">Edit</a></button>
+                <button class="btn btn-secondary" id="print">Print</button>
+                <button class="btn btn-success" id="mark-paid">Mark as Paid</button>
+                <button class="btn btn-success" id="mark-claimed">Mark as Claimed</button>
             </div>
         </div>
+        <script>
+            const markAsPaidBtn = document.getElementById('mark-paid');
+            markAsPaidBtn.addEventListener('click', () => {
+                const paymentInput = document.getElementById('payment-input');
+                if (paymentInput.style.display === 'block')
+                    paymentInput.style.display = 'none';
+                else
+                    paymentInput.style.display = 'block';
+            });
+
+            const markAsClaimedBtn = document.getElementById('mark-claimed');
+            markAsClaimedBtn.addEventListener('click', () => {
+                window.location.href = "{% url 'inventory:mark-claimed' order.pk %}"
+            });
+        </script>
     </div>
-</body>
-</html>
+{% endblock %}

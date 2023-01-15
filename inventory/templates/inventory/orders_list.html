@@ -1,0 +1,68 @@
+{% extends "../pages/base.html" %}
+{% block content %}
+    <div class="container container-fluid">
+        <div class="row" style="display: flex; flex-direction: row;">
+            <div class="col-sm-11">
+                <h1>Orders Masterlist</h1>
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-success" id="create">Create</button>
+            </div>
+            <script>
+                const createBtn = document.getElementById('create');
+                createBtn.addEventListener('click', () => {
+                    window.location.href = "{% url 'inventory:new' %}";
+                });
+            </script>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Control No.</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Weight</th>
+                    <th>Service Cost</th>
+                    <th>Detergent</th>
+                    <th>Fabcon</th>
+                    <th>Bleach</th>
+                    <th>Plastic</th>
+                    <th>Total Amount</th>
+                    <th>Remarks</th>
+                    <th>Date Required</th>
+                    <th>Time Required</th>
+                    <th>Date Claimed</th>
+                    <th>Time Claimed</th>
+                    <th>Payment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.pk }}</td>
+                    <td>{{ order.date_created }}</td>
+                    <td>{{ order.customer }}</td>
+                    <td>{{ order.weight }}</td>
+                    <td>{{ order.service_cost }}</td>
+                    <td>{{ order.detergent_cost }}</td>
+                    <td>{{ order.fabcon_cost }}</td>
+                    <td>{{ order.bleach_cost }}</td>
+                    <td>{{ order.plastic_cost }}</td>
+                    <td>{{ order.total_cost }}</td>
+                    <td>{{ order.remarks }}</td>
+                    <td>{{ order.date_required|date:"N d, Y" }}</td>
+                    <td>{{ order.date_required|time:"h:i" }}</td>
+                    <td>{{ order.date_claimed|date:"N d, Y" }}</td>
+                    <td>{{ order.date_claimed|time:"h:i" }}</td>
+                    <td>{{ order.payment_made }}</td>
+                    <td><button class="btn btn-secondary" ><a href="{% url 'inventory:view' order.pk %} ">Open</a></button></td>
+                    <script>
+
+                    </script>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
