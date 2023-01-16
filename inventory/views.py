@@ -131,16 +131,44 @@ def mark_as_paid_receipt(request, order_id):
 
 def list_orders(request):
     orders = Order.objects.all()
+    customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
     context = {
-        'orders': orders
+        'orders': orders,
+        'customers': customers,
+    }
+    return render(request, 'inventory/orders_list.html', context)
+
+
+def list_orders_with_search_key(request):
+    search_key = request.POST.get('search_key', None)
+    customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
+    orders = Order.objects.annotate(
+        fullname=Concat(F('customer__first_name'), Value(' '), F('customer__last_name'))
+    ).filter(fullname__icontains=search_key)
+    
+    if search_key:
+        orders = orders.filter(fullname__icontains=search_key)
+
+    context = {
+        'orders': orders,
+        'customers': customers,
     }
     return render(request, 'inventory/orders_list.html', context)
 
 
 def list_unclaimed_orders(request):
-    unclaimed_orders = Order.objects.filter(date_claimed__isnull=True)
+    search_key = request.POST.get('search_key', None)
+    unclaimed_orders = Order.objects.filter(
+        date_claimed__isnull=True
+    ).annotate(fullname=Concat(F('customer__first_name'), Value(' '), F('customer__last_name')))
+    customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
+
+    if search_key:
+        unclaimed_orders = unclaimed_orders.filter(fullname__icontains=search_key)
+
     context = {
-        'orders': unclaimed_orders
+        'orders': unclaimed_orders,
+        'customers': customers,
     }
     return render(request, 'inventory/orders_list.html', context)
 

@@ -1,12 +1,25 @@
 {% extends "../pages/base.html" %}
 {% block content %}
+    <br><br><br><br>
     <div class="container container-fluid">
         <div class="row" style="display: flex; flex-direction: row;">
-            <div class="col-sm-11">
+            <div class="col-sm-8">
                 <h1>Orders Masterlist</h1>
             </div>
             <div class="col-sm-1">
                 <button class="btn btn-success" id="create">Create</button>
+            </div>
+            <div class="col-sm-3">
+                <form class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row;" action="{% url 'inventory:list-orders-with-name-search' %}" method="post">
+                {% csrf_token %}
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" list="datalist-options" aria-label="Search" style="width: 60%;" name="search_key">
+                    <datalist id="datalist-options">
+                        {% for customer in customers %}
+                        <option value="{{ customer.fullname }}">
+                        {% endfor %}
+                    </datalist>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
             </div>
             <script>
                 const createBtn = document.getElementById('create');
