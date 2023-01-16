@@ -1,6 +1,8 @@
 import json
 
 from django.utils import timezone
+from django.db.models import F, Value
+from django.db.models.functions import Concat
 
 from django.core.serializers import serialize
 from django.http import HttpResponse
@@ -12,7 +14,9 @@ from inventory.models import Customer, Order
 
 # Create your views here.
 def show_create_receipt(request):
-    return render(request, 'inventory/create_order_slip.html')
+    customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
+    context = {'customers': customers}
+    return render(request, 'inventory/create_order_slip.html', context)
 
 
 def show_edit_receipt(request, order_id):
@@ -30,20 +34,29 @@ def show_order(request, order_id):
 
 
 def create_receipt(request):
-    customer = request.POST['customer']
+    first_name = request.POST['first_name']
+    last_name = request.POST['last_name']
     contact_number = request.POST['contact_number']
-    customer = Customer.objects.create(
-        first_name=customer,
-        contact_number=contact_number
-    )
+    existing_customer = request.POST['existing_customer']
+    customer = None
+
+    if existing_customer:
+        customer = Customer.objects.annotate(
+            fullname=Concat(F('first_name'), Value(' '), F('last_name'))
+        ).get(fullname=existing_customer)
+    else:
+        customer, _ = Customer.objects.get_or_create(
+            first_name=first_name,
+            last_name=last_name,
+        )
+    customer.contact_number = contact_number
+    customer.save(update_fields=['contact_number'])
 
     weight = request.POST['weight']
     # TODO: What do I do with this?
     # service_type = request.POST['service_type']
     wash_cost = request.POST['wash_cost']
     dry_cost = request.POST['dry_cost']
-    # TODO: Ask about the fold cost
-    # fold_cost = request.POST['fold_cost']
     detergent_cost = request.POST['detergent_cost']
     fabcon_cost = request.POST['fabcon_cost']
     bleach_cost = request.POST['bleach_cost']
@@ -51,23 +64,25 @@ def create_receipt(request):
     plastic_cost = request.POST['plastic_cost']
     date_required = request.POST['date_required']
     time_required = request.POST['time_required']
+    remarks = request.POST['time_required']
 
     date_required = datetime.strptime(f'{date_required} {time_required}', '%Y-%m-%d %H:%M')
 
     Order.objects.create(
         customer=customer,
         weight=weight,
+        remarks=remarks,
         wash_cost=wash_cost,
         dry_cost=dry_cost,
-        # fold_cost=fold_cost,
         detergent_cost=detergent_cost,
         fabcon_cost=fabcon_cost,
         bleach_cost=bleach_cost,
         plastic_cost=plastic_cost,
-        date_required=date_required
+        date_required=date_required,
+        date_created=timezone.now()
     )
 
-    return redirect('inventory:list')
+    return redirect('inventory:list-orders')
 
 
 def update_receipt(request, order_id):
@@ -89,9 +104,9 @@ def update_receipt(request, order_id):
     order.fabcon_cost = request.POST['fabcon_cost']
     order.bleach_cost = request.POST['bleach_cost']
     order.plastic_cost = request.POST['plastic_cost']
+    order.remarks = request.POST['remarks']
     date_required = request.POST['date_required']
     time_required = request.POST['time_required']
-
     order.date_required = datetime.strptime(f'{date_required} {time_required}', '%Y-%m-%d %H:%M')
     order.save()
 

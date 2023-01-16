@@ -9,14 +9,48 @@
             <div class="main-fields">
                 <div class="row">
                     <div class="col">
-                        <div class="field mb-3">
-                            <label class="form-label" for="customer">Customer</label>
-                            <input class="form-control form-control-sm" type="text" name="customer" id="customer">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="existingCustomer">
+                            <label class="form-check-label" for="existingCustomer">Existing customer</label>
                         </div>
-                        <div class="field mb-3">
-                            <label class="form-label" for="contact_number">Tel. No.: </label>
-                            <input class="form-control form-control-sm" type="tel" name="contact_number" id="contact_number">
+                        <div id="new-customer-fields">
+                            <div class="field mb-3">
+                                <label class="form-label" for="customer">First Name</label>
+                                <input class="form-control form-control-sm" type="text" name="first_name" id="customer">
+                            </div>
+                            <div class="field mb-3">
+                                <label class="form-label" for="customer">Last Name</label>
+                                <input class="form-control form-control-sm" type="text" name="last_name" id="customer">
+                            </div>
+                            <div class="field mb-3">
+                                <label class="form-label" for="contact_number">Tel. No.: </label>
+                                <input class="form-control form-control-sm" type="tel" name="contact_number" id="contact_number">
+                            </div>
                         </div>
+                        <div id="existing-customer-fields" style="display: none;">
+                            <label for="customer-list" class="form-label">Existing Customer</label>
+                            <input class="form-control" list="datalist-options" id="customer-list" placeholder="Type to search customer..." name="existing_customer">
+                            <datalist id="datalist-options">
+                                {% for customer in customers %}
+                                <option value="{{ customer.fullname }}">
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <script>
+                            const existingCustomerBtn = document.getElementById('existingCustomer');
+
+                            existingCustomerBtn.addEventListener('change', () => {
+                                const newCustomerFieldsElem = document.querySelector('.col #new-customer-fields');
+                                const existingCustomerFieldsElem = document.querySelector('.col #existing-customer-fields');
+                                if (existingCustomerBtn.checked) {
+                                    existingCustomerFieldsElem.style.display = 'block';
+                                    newCustomerFieldsElem.style.display = 'none';
+                                } else {
+                                    newCustomerFieldsElem.style.display = 'block';
+                                    existingCustomerFieldsElem.style.display = 'none';
+                                }
+                            });
+                        </script>
                         <div class="field mb-3">
                             <label class="form-label" for="weight">Weight: </label>
                             <input class="form-control form-control-sm" type="text" name="weight" id="weight">
@@ -29,7 +63,7 @@
                         </div>
                         <div class="mb-3 field">
                             <label class="form-label" for="remarks">Remarks</label>
-                            <textarea class="form-control" id="remarks" rows="3"></textarea>
+                            <textarea class="form-control" id="remarks" rows="3" name="remarks"></textarea>
                         </div>
                     </div>
                 </div>
