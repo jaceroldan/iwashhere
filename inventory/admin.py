@@ -5,7 +5,8 @@ from inventory.models import (
     Product,
     Transaction,
     LineItem,
-    PaymentOption
+    PaymentOption,
+    Order,
 )
 
 @admin.register(PaymentOption)
@@ -38,3 +39,8 @@ class LineItemAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'quantity', 'product_type', 'unit_price', 'date_created')
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('date_created', 'customer',)
