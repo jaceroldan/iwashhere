@@ -4,9 +4,9 @@ from django.db import models
 
 
 class Customer(models.Model):
-    first_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length=100, null=True)
-    contact_number = models.CharField(max_length=20, null=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    contact_number = models.CharField(max_length=20, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
