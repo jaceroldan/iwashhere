@@ -13,6 +13,10 @@ from django.shortcuts import render, redirect
 from inventory.models import Customer, Order
 
 # Create your views here.
+def show_menu(request):
+    return render(request, 'inventory/menu.html')
+
+
 def show_create_receipt(request):
     customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
     context = {'customers': customers}

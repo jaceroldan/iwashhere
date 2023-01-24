@@ -4,6 +4,7 @@ from . import views
 
 app_name = 'inventory'
 urlpatterns = [
+    path('', views.show_menu, name='menu'),
     path('order/new/', views.show_create_receipt, name='new'),
     path('order/create/', views.create_receipt, name='create'),
     path('order/edit/<int:order_id>', views.show_edit_receipt, name='edit'),

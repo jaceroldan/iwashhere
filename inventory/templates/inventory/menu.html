@@ -1,0 +1,53 @@
+{% extends "../pages/base.html" %}
+{% load static  %}
+{% block content %}
+<div class="main-menu">
+    <div class="main-menu-options">
+        <ul>
+            <a href="{% url 'inventory:list-orders' %}"><li>Orders</li></a>
+            <a href="{% url 'inventory:list-customers' %}"><li>Customers</li></a>
+            <a href="{% url 'inventory:list-orders-unclaimed' %}"><li>To Claim</li></a>
+        </ul>
+    </div>
+</div>
+<style>
+    .main-menu {
+        background-image: url("{% static 'inventory/i-wash-here-background.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        margin-top: 7vh;
+        height: 90vh;
+    }
+
+    .main-menu-options {
+        position: relative;
+        background-color: #e26d1b;
+        min-width: 200px;
+        width: 30%;
+        height: 500px;
+        margin: 10px auto;
+        top: 100px;
+    }
+
+    .main-menu-options ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 10px;
+        list-style: none;
+        height: 100%;
+        padding: 0px;
+    }
+
+    .main-menu-options ul a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #a2f2f1;
+        margin: 30px;
+        height: 100%;
+    }
+</style>
+{% endblock %}
