@@ -1,13 +1,12 @@
 from decimal import Decimal
 
 from django.db import models
-from django.db.models import Sum
 
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    contact_number = models.CharField(max_length=20)
+    contact_number = models.CharField(max_length=20, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
