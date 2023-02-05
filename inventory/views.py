@@ -68,7 +68,7 @@ def create_receipt(request):
     plastic_cost = request.POST['plastic_cost']
     date_required = request.POST['date_required']
     time_required = request.POST['time_required']
-    remarks = request.POST['time_required']
+    remarks = request.POST['remarks']
 
     date_required = datetime.strptime(f'{date_required} {time_required}', '%Y-%m-%d %H:%M')
 
@@ -177,6 +177,7 @@ def retrieve_order(request, order_id):
             'customer': serialize('json', [order.customer]),
         }
     }
+    context['obj']['pk'] = order.pk
     return HttpResponse(json.dumps(context))
 
 
