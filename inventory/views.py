@@ -72,7 +72,7 @@ def create_receipt(request):
 
     date_required = datetime.strptime(f'{date_required} {time_required}', '%Y-%m-%d %H:%M')
 
-    Order.objects.create(
+    order = Order.objects.create(
         customer=customer,
         weight=weight,
         remarks=remarks,
@@ -86,7 +86,7 @@ def create_receipt(request):
         date_created=timezone.now()
     )
 
-    return redirect('inventory:list-orders')
+    return redirect('inventory:view', order.pk)
 
 
 def update_receipt(request, order_id):
@@ -152,23 +152,6 @@ def list_orders(request):
     return render(request, 'inventory/orders_list.html', context)
 
 
-# def list_orders_with_search_key(request):
-#     search_key = request.POST.get('search_key', None)
-#     customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
-#     orders = Order.objects.annotate(
-#         fullname=Concat(F('customer__first_name'), Value(' '), F('customer__last_name'))
-#     ).filter(fullname__icontains=search_key)
-    
-#     if search_key:
-#         orders = orders.filter(fullname__icontains=search_key)
-
-#     context = {
-#         'orders': orders,
-#         'customers': customers,
-#     }
-#     return render(request, 'inventory/orders_list.html', context)
-
-
 def list_unclaimed_orders(request):
     search_key = request.POST.get('search_key', None)
     unclaimed_orders = Order.objects.filter(
@@ -184,6 +167,7 @@ def list_unclaimed_orders(request):
         'customers': customers,
     }
     return render(request, 'inventory/orders_list.html', context)
+
 
 def retrieve_order(request, order_id):
     order = Order.objects.get(pk=order_id)
