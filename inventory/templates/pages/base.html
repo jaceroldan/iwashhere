@@ -173,7 +173,7 @@
                 doc.text(hours + ":" + minutes + " " + meridian, 3.0, 5.3);
 
                 doc.autoPrint();
-                doc.save('a4.pdf'); 
+                doc.save(customerFields.first_name + " " + customerFields.last_name + " (" + orderFields.date_created + ")" + '.pdf'); 
             }
 
             fetch(url)
