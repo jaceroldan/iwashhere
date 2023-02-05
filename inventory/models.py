@@ -105,8 +105,6 @@ class Order(models.Model):
     weight = models.DecimalField(
         max_digits=5, decimal_places=2, null=True, blank=True)
     remarks = models.TextField()
-    wash_cost = models.DecimalField(max_digits=8, decimal_places=2)
-    dry_cost = models.DecimalField(max_digits=8, decimal_places=2)
     service_cost = models.DecimalField(max_digits=8, decimal_places=2)
     detergent_cost = models.DecimalField(max_digits=8, decimal_places=2)
     fabcon_cost = models.DecimalField(max_digits=8, decimal_places=2)
