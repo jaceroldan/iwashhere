@@ -60,31 +60,30 @@
         const today = new Date();
 
         if (document.location.pathname === '/inventory/order/new/') {
-            const dateCreated = document.getElementById('date_created')
+            const dateCreated = document.getElementById('date_created');
             
             let month = today.getMonth() + 1;
             if (month < 10)
                 month = '0' + month;
-            let day = today.getDay();
+            let day = today.getDate();
             if (day < 10)
                 day = '0' + day;
-            if (dateCreated)
+            if (dateCreated) {
                 dateCreated.value = `${today.getFullYear()}-${month}-${day}`;
+            }
         }
 
         function updateTotal() {
             let idElem = document.getElementById('total');
-            let washCostElem = document.getElementsByName('wash_cost')[0];
-            let dryCostElem = document.getElementsByName('dry_cost')[0];
+            let serviceCostElem = document.getElementsByName('service_cost')[0];
             let detergentCostElem = document.getElementsByName('detergent_cost')[0];
             let fabconCostElem = document.getElementsByName('fabcon_cost')[0];
             let bleachCostElem = document.getElementsByName('bleach_cost')[0];
             let plasticCostElem = document.getElementsByName('plastic_cost')[0];
 
-            if (washCostElem)
+            if (serviceCostElem)
                 idElem.innerText = (
-                    (Number.parseFloat(washCostElem.value) || 0)
-                    + (Number.parseFloat(dryCostElem.value) || 0)
+                    (Number.parseFloat(serviceCostElem.value) || 0)
                     + (Number.parseFloat(detergentCostElem.value) || 0)
                     + (Number.parseFloat(fabconCostElem.value) || 0)
                     + (Number.parseFloat(bleachCostElem.value) || 0)
@@ -95,15 +94,13 @@
 
         const idElem = document.getElementById('total');
         if (idElem) {
-            const washCostElem = document.getElementsByName('wash_cost')[0];
-            const dryCostElem = document.getElementsByName('dry_cost')[0];
+            const serviceCostElem = document.getElementsByName('service_cost')[0];
             const detergentCostElem = document.getElementsByName('detergent_cost')[0];
             const fabconCostElem = document.getElementsByName('fabcon_cost')[0];
             const bleachCostElem = document.getElementsByName('bleach_cost')[0];
             const plasticCostElem = document.getElementsByName('plastic_cost')[0];
     
-            washCostElem.addEventListener('change', updateTotal);
-            dryCostElem.addEventListener('change', updateTotal);
+            serviceCostElem.addEventListener('change', updateTotal);
             detergentCostElem.addEventListener('change', updateTotal);
             fabconCostElem.addEventListener('change', updateTotal);
             bleachCostElem.addEventListener('change', updateTotal);
@@ -137,7 +134,7 @@
                 doc.text(orderFields.remarks, 2.5, 3.25);
                 
                 doc.text('Service Amount', 0.5, 3.65);
-                doc.text((parseFloat(orderFields.wash_cost) + parseFloat(orderFields.dry_cost)).toFixed(2), 3.0, 3.65);
+                doc.text((parseFloat(orderFields.service_cost)).toFixed(2), 3.0, 3.65);
                 doc.text('Detergent ', 0.5, 3.85);
                 doc.text(orderFields.detergent_cost, 3.0, 3.85);
                 doc.text('FabCon ', 0.5, 4.05);
@@ -148,8 +145,7 @@
                 doc.text(orderFields.plastic_cost, 3.0, 4.45);
 
                 const total = (
-                    parseInt(orderFields.wash_cost)
-                    + parseInt(orderFields.dry_cost)
+                    parseInt(orderFields.service_cost)
                     + parseInt(orderFields.detergent_cost)
                     + parseInt(orderFields.fabcon_cost)
                     + parseInt(orderFields.bleach_cost)
@@ -184,7 +180,8 @@
         }
 
         const printElem = document.getElementById('print');
-        printElem.addEventListener('click', print);
+        if (printElem)
+            printElem.addEventListener('click', print);
     </script>
 </body>
 </html>

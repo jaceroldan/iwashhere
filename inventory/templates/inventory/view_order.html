@@ -41,12 +41,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th>Wash</th>
-                        <td>{{ order.wash_cost }}</td>
-                    </tr>
-                    <tr>
-                        <th>Dry</th>
-                        <td>{{ order.dry_cost }}</td>
+                        <th>Service Cost</th>
+                        <td>{{ order.service_cost }}</td>
                     </tr>
                     <tr>
                         <th>Detergent</th>
@@ -64,11 +60,6 @@
                         <th>Plastic</th>
                         <td>{{ order.plastic_cost }}</td>
                     </tr>
-                    <!-- <tr>
-                        <th>Others</th>
-                        <td><input type="number"></td>
-                        <td><input type="number"></td>
-                    </tr> -->
                 </tbody>
             </table>
             <div class="row">
@@ -77,12 +68,6 @@
                     <p><b>PHP {{ order.total_cost }}</b></p>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col">
-                    <label for="remarks">Remarks: </label>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                </div>
-            </div> -->
             <div class="row">
                 <div class="col">
                     <label for="date_required">Date/Time Required</label>
