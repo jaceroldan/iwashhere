@@ -134,30 +134,39 @@ def mark_as_paid_receipt(request, order_id):
 
 
 def list_orders(request):
+    page = int(request.GET.get('page', 1))
+    search_key = request.GET.get('search_key', None)
     orders = Order.objects.all()
-    customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
-    context = {
-        'orders': orders,
-        'customers': customers,
-    }
-    return render(request, 'inventory/orders_list.html', context)
-
-
-def list_orders_with_search_key(request):
-    search_key = request.POST.get('search_key', None)
-    customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
-    orders = Order.objects.annotate(
-        fullname=Concat(F('customer__first_name'), Value(' '), F('customer__last_name'))
-    ).filter(fullname__icontains=search_key)
-    
     if search_key:
-        orders = orders.filter(fullname__icontains=search_key)
+        orders = orders.annotate(
+            fullname=Concat(F('customer__first_name'), Value(' '), F('customer__last_name'))
+        ).filter(fullname__icontains=search_key)
 
+    customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
     context = {
-        'orders': orders,
+        'orders': orders[(page - 1) * 10:((page - 1) * 10) + 10],
         'customers': customers,
+        'total_orders': orders.count(),
+        'page': page,
     }
     return render(request, 'inventory/orders_list.html', context)
+
+
+# def list_orders_with_search_key(request):
+#     search_key = request.POST.get('search_key', None)
+#     customers = Customer.objects.annotate(fullname=Concat(F('first_name'), Value(' '), F('last_name')))
+#     orders = Order.objects.annotate(
+#         fullname=Concat(F('customer__first_name'), Value(' '), F('customer__last_name'))
+#     ).filter(fullname__icontains=search_key)
+    
+#     if search_key:
+#         orders = orders.filter(fullname__icontains=search_key)
+
+#     context = {
+#         'orders': orders,
+#         'customers': customers,
+#     }
+#     return render(request, 'inventory/orders_list.html', context)
 
 
 def list_unclaimed_orders(request):

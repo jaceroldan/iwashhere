@@ -10,21 +10,26 @@
                 <button class="btn btn-success" id="create">Create</button>
             </div>
             <div class="col-sm-3">
-                <form class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row;" action="{% url 'inventory:list-orders-with-name-search' %}" method="post">
-                {% csrf_token %}
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" list="datalist-options" aria-label="Search" style="width: 60%;" name="search_key">
+                <div class="form-inline my-2 my-lg-0" style="display: flex; flex-direction: row;">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" list="datalist-options" aria-label="Search" style="width: 60%;" name="search_key" id="search_key">
                     <datalist id="datalist-options">
                         {% for customer in customers %}
                         <option value="{{ customer.fullname }}">
                         {% endfor %}
                     </datalist>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                  </form>
+                    <button class="btn btn-outline-success my-2 my-sm-0" id="search">Search</button>
+                </div>
             </div>
             <script>
                 const createBtn = document.getElementById('create');
                 createBtn.addEventListener('click', () => {
                     window.location.href = "{% url 'inventory:new' %}";
+                });
+
+                const searchBtn = document.getElementById('search');
+                const searchKey = document.getElementById('search_key');
+                searchBtn.addEventListener('click', () => {
+                    window.location.href = "{% url 'inventory:list-orders' %}" + "?search_key=" + searchKey.value;
                 });
             </script>
         </div>
@@ -69,13 +74,57 @@
                     <td>{{ order.date_claimed|date:"N d, Y" }}</td>
                     <td>{{ order.date_claimed|time:"h:i" }}</td>
                     <td>{{ order.payment_made }}</td>
-                    <td><button class="btn btn-secondary" ><a href="{% url 'inventory:view' order.pk %} ">Open</a></button></td>
+                    <td><button class="btn btn-primary" ><a href="{% url 'inventory:view' order.pk %} ">Open</a></button></td>
                     <script>
 
                     </script>
                 </tr>
                 {% endfor %}
             </tbody>
+            
         </table>
+        <nav aria-label="Orders navigation">
+            <ul class="pagination justify-content-center"></ul>
+        </nav>
     </div>
+    <script>
+        const page = {{ page }};
+        const totalOrders = {{ total_orders }};
+        const totalPages = Math.ceil(totalOrders / 10);
+        const ulElem = document.querySelector('.justify-content-center');
+        const queryParams = location.search.substring(1).split('&').filter(param => {
+            return !param.includes('page=') && param;
+        });
+
+        if (page > 1) {
+            prevElemLi = createPaginationElem(page - 1, 'Previous');
+            ulElem.appendChild(prevElemLi);
+        }
+        
+        for (let i = page; i <= totalPages && i < page + 10; i++) {
+            let liElem = createPaginationElem(i);
+            ulElem.appendChild(liElem);
+        }
+
+        if (page < totalPages) {
+            nextElemLi = createPaginationElem(page + 1, 'Next');
+            ulElem.appendChild(nextElemLi);
+        }
+
+        function createPaginationElem(page, text=null) {
+            let liElem = document.createElement('li');
+            let aElem = document.createElement('a');
+            liElem.className = 'page-item';
+            aElem.className = 'page-link';
+            aElem.href = location.origin + location.pathname + "?page=" + page + queryParams.reduce((prev, current) => prev + "&" + current, "");
+            aElem.innerText = text ? text : page;
+            liElem.appendChild(aElem);
+            return liElem;
+        }
+    </script>   
+    <style>
+        .btn-primary a {
+            color: white;
+        }
+    </style>
 {% endblock %}

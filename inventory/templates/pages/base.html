@@ -114,7 +114,6 @@
             function process(data) {
                 const orderFields = JSON.parse(data.order)[0].fields;
                 const customerFields = JSON.parse(data.customer)[0].fields;
-                console.log(orderFields, customerFields);
 
                 var doc = new jsPDF();
                 doc.text('Customer: ' + customerFields.first_name, 10, 10);
@@ -145,7 +144,6 @@
             fetch(url)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
                     process(data.obj);
                 });
             // var doc = new jsPDF();
