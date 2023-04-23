@@ -63,8 +63,7 @@ def create_receipt(request):
     weight = request.POST['weight']
     # TODO: What do I do with this?
     # service_type = request.POST['service_type']
-    wash_cost = request.POST['wash_cost']
-    dry_cost = request.POST['dry_cost']
+    service_cost = request.POST['service_cost']
     detergent_cost = request.POST['detergent_cost']
     fabcon_cost = request.POST['fabcon_cost']
     bleach_cost = request.POST['bleach_cost']
@@ -80,8 +79,7 @@ def create_receipt(request):
         customer=customer,
         weight=weight,
         remarks=remarks,
-        wash_cost=wash_cost,
-        dry_cost=dry_cost,
+        service_cost=service_cost,
         detergent_cost=detergent_cost,
         fabcon_cost=fabcon_cost,
         bleach_cost=bleach_cost,
@@ -106,8 +104,7 @@ def update_receipt(request, order_id):
     customer.save(update_fields=['first_name', 'last_name', 'contact_number'])
 
     order.weight = request.POST['weight']
-    order.wash_cost = request.POST['wash_cost']
-    order.dry_cost = request.POST['dry_cost']
+    order.service_cost = request.POST['service_cost']
     order.detergent_cost = request.POST['detergent_cost']
     order.fabcon_cost = request.POST['fabcon_cost']
     order.bleach_cost = request.POST['bleach_cost']
