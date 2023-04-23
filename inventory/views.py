@@ -194,7 +194,7 @@ class DarienRecommenderView(View):
         categories = ['Fiction', 'Comics & Graphic Novels', 'Comedy', 'Biography & Autobiography', 'Cooking']
         authors = ['Neal Stephenson', 'Bill Watterson', 'Harpo Marx', 'John Perkins']
 
-        book_data = pd.read_csv('./inventory/fixtures/books_data.csv')
+        book_data = pd.read_csv('/home/jaceroldan/iwashhere/inventory/fixtures/books_data.csv')
 
         # Ensure that the response has an image
         book_data = book_data[book_data['image'].isna() == False]
