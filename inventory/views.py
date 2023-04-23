@@ -1,5 +1,9 @@
+import ast
 import json
 
+import pandas as pd
+
+from django.views import View
 from django.utils import timezone
 from django.db.models import F, Value
 from django.db.models.functions import Concat
@@ -187,3 +191,36 @@ def list_customers(request):
         'customers': customers
     }
     return render(request, 'inventory/customers_list.html', context)
+
+class DarienRecommenderView(View):
+    def get(self, request):
+        categories = ['Fiction', 'Comics & Graphic Novels', 'Comedy', 'Biography & Autobiography', 'Cooking']
+        authors = ['Neal Stephenson', 'Bill Watterson', 'Harpo Marx', 'John Perkins']
+
+        book_data = pd.read_csv('./inventory/fixtures/books_data.csv')
+
+        # Ensure that the response has an image
+        book_data = book_data[book_data['image'].isna() == False]
+
+        # Ensure that the response has a category
+        book_data = book_data[book_data['categories'].isna() == False]
+
+        # Ensure that the response has an author
+        book_data = book_data[book_data['authors'].isna() == False]
+
+        book_data['first_category'] = book_data['categories'].apply(lambda x: ast.literal_eval(x)[0])
+
+        book_data['first_author'] = book_data['categories'].apply(lambda x: ast.literal_eval(x)[0])
+
+        # Match categories
+        categories_book_data = book_data[book_data['first_category'].isin(categories) == True]
+
+        # Match authors
+        authors_book_data = book_data[book_data['first_author'].isin(authors) == True]
+
+        # combined dataset
+        filtered_book_data = pd.concat([categories_book_data, authors_book_data])
+
+        sample = filtered_book_data.sample().to_json()
+        return HttpResponse(sample)
+

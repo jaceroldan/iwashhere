@@ -16,4 +16,5 @@ urlpatterns = [
     path('orders/', views.list_orders, name='list-orders'),
     path('orders-unclaimed/', views.list_unclaimed_orders, name='list-orders-unclaimed'),
     path('customers/', views.list_customers, name='list-customers'),
+    path('recommend/', views.DarienRecommenderView.as_view(), name='recommend'),
 ]
